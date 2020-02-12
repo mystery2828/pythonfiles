@@ -1,29 +1,40 @@
-def binarySearch(arr, l, r, x): 
-    count=0
-    while l <= r: 
-  
-        mid = l + (r - l)/2; 
-          
-        # Check if x is present at mid 
-        if arr[mid] == x: 
-             r = mid-1
-             l = mid+1
-             count+=1
-  
-        # If x is greater, ignore left half 
-        elif arr[mid] < x: 
-            l = mid + 1
-  
-        # If x is smaller, ignore right half 
-        else: 
-            r = mid - 1
-      
-    # If we reach here, then the element was not present 
-    return count
+def first(arr,l,r,k,n):
+    if l<=r:
+        mid = (l+r)//2
+        if (arr[mid] == k and (mid == 0 or k > arr[mid-1])):
+            return mid  
+        elif (k>arr[mid]):
+            return first(arr,mid+1,n-1,k,n)
+        else:
+            return first(arr,0,mid-1,k,n)
+    return -1
+def second(arr,l,r,k,n):
+    
+    if l<=r:
+        mid = (l+r)//2
+        if (arr[mid] == k and (mid == n-1 or k < arr[mid+1])):
+            return mid  
+        elif (k>arr[mid]):
+            return second(arr,mid+1,n-1,k,n)
+        elif (k<arr[mid]):
+            return second(arr,l,mid-1,k,n)
+    return -1
 
-arr = [1,3,3,4,4,5,6,8,9] 
-x = 3
-  
-# Function call 
-result = binarySearch(arr, 0, len(arr)-1, x) 
-print(count)
+
+def search(arr,left,right,key,n):
+    modlu = first(arr,left,right,key,n)
+    if modlu == -1:
+        return -1
+    eradu = second(arr,modlu,right,key,n)
+    return (eradu-modlu+1)
+
+
+
+if __name__ == "__main__":   
+    n = 9
+    arr = [1,3,3,4,4,5,6,8,9]
+    key = 7
+    left = 0
+    right = n-1
+    count = search(arr,left,right,key,n)
+    print(count)
