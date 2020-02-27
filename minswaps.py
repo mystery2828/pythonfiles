@@ -15,7 +15,6 @@ def minimumSwaps(arr):
 		if (arr[i] != i + 1): 
 
 			while (arr[i] != i + 1): 
-				temp = 0; 
 
 				# Swap current element 
 				# with correct position 
