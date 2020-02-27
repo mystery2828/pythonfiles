@@ -19,10 +19,8 @@ def minimumSwaps(arr):
 
 				# Swap current element 
 				# with correct position 
-				# of that element 
-				temp = arr[arr[i] - 1]; 
-				arr[arr[i] - 1] = arr[i]; 
-				arr[i] = temp; 
+				# of that element  
+				arr[arr[i] - 1],arr[i] = arr[i],arr[arr[i]-1] 
 				count += 1; 
 			
 		# Increment for next index 
