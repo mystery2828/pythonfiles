@@ -36,4 +36,3 @@ if __name__ == '__main__':
 	# Function to find minimum swaps 
 	print(minimumSwaps(arr)); 
 	
-# This code is contributed by 29AjayKumar 
