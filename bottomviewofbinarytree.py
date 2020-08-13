@@ -1,49 +1,62 @@
-from collections import defaultdict
-
-def Inorder(root, hd,height):
-    if root is None: # base case
-        return
-
-    # call left child with one less horizontal distance and height increases by one
-    Inorder(root.left,hd-1,height+1)
-
-    if hd in bottomView.hrz_map: # check if the hd exits in the map
-        # check if it has height not less than already exiting node
-        if bottomView.hrz_map[hd][0] <= height :
-            # update the value
-            bottomView.hrz_map[hd] = [height,root.data] # insert the pair of height and value
-    else:
-        # insert this first timer horizontal distance node in map
-        bottomView.hrz_map[hd] = [height,root.data] # insert the pair of height and value
-
-    # call for right child
-    Inorder(root.right,hd+1,height+1)
+# Data structure to store a Binary Tree node
+class Node:
+	def __init__(self, key=None, left=None, right=None):
+		self.key = key
+		self.left = left
+		self.right = right
 
 
-def bottomView(root):
-    '''
-    :param root: root of the binary tree
-    :return: list containing the bottom view from left to right
-    '''
-    res = []
-    if root == None: # base case
-        return res
+# Recursive function to do a pre-order traversal of the tree and fill the dictionary
+# Here node has 'dist' horizontal distance from the root of the
+# tree and level represent level of the node
+def printBottom(root, dist, level, dict):
 
-    # map to store key as horizontal distance and value as pair of height and value of node
-    bottomView.hrz_map = defaultdict(list)
+	# base case: empty tree
+	if root is None:
+		return
 
-    # do inorder traversal updating our hrz_map.
-    Inorder(root,0,0) # 0,0 is for horizontal and height of root as parameters.
+	# if current level is more than or equal to maximum level seen so far
+	# for the same horizontal distance or horizontal distance is seen for
+	# the first time, update the dictionary
+	if dist not in dict or level >= dict[dist][1]:
+		# update value and level for current distance
+		dict[dist] = (root.key, level)
 
-    # now for every corresponding horizontal distance, we have max height element in map
-    # traverse the map and sort according to distance, then print it
-    list_pair =[] # store hrz dist and value pair
-    for hd in bottomView.hrz_map:
-        list_pair.append([hd,bottomView.hrz_map[hd][1]])
-    list_pair.sort()
+	# recur for left subtree by decreasing horizontal distance and
+	# increasing level by 1
+	printBottom(root.left, dist - 1, level + 1, dict)
 
-    # print the values
-    for pair in list_pair:
-        res.append(pair[1])
+	# recur for right subtree by increasing both level and
+	# horizontal distance by 1
+	printBottom(root.right, dist + 1, level + 1, dict)
 
-    return res
+
+# Function to print the bottom view of given binary tree
+def printBottomView(root):
+
+	# create a dictionary where
+	# key -> relative horizontal distance of the node from root node and
+	# value -> pair containing node's value and its level
+	dict = {}
+
+	# do pre-order traversal of the tree and fill the dictionary
+	printBottom(root, 0, 0, dict)
+
+	# traverse the dictionary in sorted order of their keys and
+	# print the bottom view
+	for key in sorted(dict.keys()):
+		print(dict.get(key)[0], end=' ')
+
+
+if __name__ == '__main__':
+
+	root = Node(1)
+	root.left = Node(2)
+	root.right = Node(3)
+	root.left.right = Node(4)
+	root.right.left = Node(5)
+	root.right.right = Node(6)
+	root.right.left.left = Node(7)
+	root.right.left.right = Node(8)
+
+	printBottomView(root)
